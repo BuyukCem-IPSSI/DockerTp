@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  php_apache:
+    build: .
+    ports: 
+      - 8040:70
+    volumes:
+      - /var/www/html/DockerProject/:/var/www/html
+  mariadb:   
+    image: mariadb
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=wp
+    ports:
+      - 33060:3302
+  pma:
+    image: phpmyadmin/phpmyadmin 
+    environment:
+      - PMA_HOST=mariadb
+    ports:
+      - 8080:80
+    depends_on:
+      - mariadb
+  mailhog:
+    image: mailhog/mailhog
+    ports: 
+      - 1025:1025 # smtp server
+      - 8025:8025 # web ui
